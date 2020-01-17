@@ -1,112 +1,69 @@
 <template>
-  <div>
-    <q-splitter
-      v-model="splitterModel"
-      style="height: 400px"
+  <div
+    class="q-pa-md"
+  >
+    <div
+      class="row justify-center"
     >
-      <template v-slot:before>
-        <div class="q-pa-md">
-          <q-tree
-            :nodes="simple"
-            node-key="label"
-            selected-color="primary"
-            :selected.sync="selected"
-            default-expand-all
-          />
-        </div>
-      </template>
-
-      <template v-slot:after>
-        <q-tab-panels
-          v-model="selected"
-          animated
-          transition-prev="jump-up"
-          transition-next="jump-up"
-        >
-          <q-tab-panel name="Relax Hotel">
-            <div class="text-h4 q-mb-md">Welcome</div>
-            <p>Lorem ipsum dolor sit,
-              amet consectetur adipisicing elit. Quis praesentium
-              cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-              commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-            <p>Lorem ipsum dolor sit,
-              amet consectetur adipisicing elit. Quis praesentium
-              cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-              commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-          </q-tab-panel>
-
-          <q-tab-panel name="Food">
-            <div class="text-h4 q-mb-md">Food</div>
-            <p>Lorem ipsum dolor sit,
-              amet consectetur adipisicing elit. Quis praesentium
-              cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-              commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-            <p>Lorem ipsum dolor sit,
-              amet consectetur adipisicing elit. Quis praesentium
-              cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-              commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-          </q-tab-panel>
-
-          <q-tab-panel name="Room service">
-            <div class="text-h4 q-mb-md">Room service</div>
-            <p>Lorem ipsum dolor sit,
-              amet consectetur adipisicing elit. Quis praesentium
-              cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-              commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-            <p>Lorem ipsum dolor sit,
-              amet consectetur adipisicing elit. Quis praesentium
-              cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-              commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-            <p>Lorem ipsum dolor sit,
-              amet consectetur adipisicing elit. Quis praesentium
-              cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-              commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-          </q-tab-panel>
-
-          <q-tab-panel name="Room view">
-            <div class="text-h4 q-mb-md">Room view</div>
-            <p>Lorem ipsum dolor sit,
-              amet consectetur adipisicing elit. Quis praesentium
-              cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-              commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-            <p>Lorem ipsum dolor sit,
-              amet consectetur adipisicing elit. Quis praesentium
-              cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-              commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-          </q-tab-panel>
-        </q-tab-panels>
-      </template>
-    </q-splitter>
+      <div
+        class="col-10 col-md-auto"
+      >
+        <q-select
+          v-model="keyword"
+          autofocus
+          fill-input
+          hide-dropdown-icon
+          hide-selected
+          input-debounce="200"
+          outlined
+          use-input
+          :options="options"
+          @filter="filter"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'PageIndex',
+  name: 'Index',
   data() {
     return {
-      splitterModel: 50,
-      selected: 'Food',
-      simple: [
-        {
-          label: 'Relax Hotel',
-          children: [
-            {
-              label: 'Food',
-              icon: 'restaurant_menu',
-            },
-            {
-              label: 'Room service',
-              icon: 'room_service',
-            },
-            {
-              label: 'Room view',
-              icon: 'photo',
-            },
-          ],
-        },
-      ],
+      keyword: '',
+      options: [],
     };
+  },
+  methods: {
+    setOptions(options) {
+      this.options = options;
+    },
+    setKeyword(keyword) {
+      this.keyword = keyword;
+    },
+    fetch(keyword) {
+      this.$axios.get(`http://localhost:8080/subjects?term=${keyword}`)
+        .then(({ data }) => {
+          if (!data.data) {
+            this.setOptions([]);
+            return;
+          }
+          const options = data.data.map((subject) => {
+            return ((((subject || {}).term || {}).preferredTerms || {})[0] || {}).termText;
+          });
+          this.setOptions([...new Set(options)]);
+        });
+    },
+    filter(keyword, update, abort) {
+      if (!keyword) {
+        abort();
+        return;
+      }
+      update(() => {
+        this.fetch(keyword);
+        this.setKeyword(keyword);
+      });
+    },
   },
 };
 </script>

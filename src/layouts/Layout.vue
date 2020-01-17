@@ -1,9 +1,13 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout
+    view="lHh Lpr lFf"
+  >
+    <q-header
+      elevated
+    >
       <q-toolbar>
         <q-toolbar-title>
-          Quasar App
+          Art & Architecture Thesaurus
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -15,6 +19,6 @@
 
 <script>
 export default {
-  name: 'MyLayout',
+  name: 'Layout',
 };
 </script>
