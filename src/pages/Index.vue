@@ -34,20 +34,24 @@
             v-for="(subject, index) in subjects"
             :key="index"
           >
-            <q-item>
+            <q-item
+              :to="'/'"
+            >
               <q-item-section>
-                <q-item-label>
-                  {{
-                    o(a(subject.term.preferredTerms)[0]).termText
-                  }}
+                <q-item-label
+                  overline
+                >
+                  <span
+                    v-html="o(a(subject.term.preferredTerms)[0]).termText"
+                  />
                 </q-item-label>
                 <q-item-label
                   caption
                   lines="5"
                 >
-                  {{
-                    o(a(subject.descriptiveNote.descriptiveNotes)[0]).noteText
-                  }}
+                  <span
+                    v-html="o(a(subject.descriptiveNote.descriptiveNotes)[0]).noteText"
+                  />
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -70,6 +74,16 @@ export default {
       subjects: [],
     };
   },
+  computed: {
+    isSubmitted() {
+      return this.term === this.$route.query.term;
+    },
+    query() {
+      return {
+        term: this.term,
+      };
+    },
+  },
   methods: {
     a(array) {
       return array || [];
@@ -78,17 +92,18 @@ export default {
       return object || {};
     },
     submit() {
+      if (this.isSubmitted) {
+        return;
+      }
       this.fetch();
+      this.$router.replace({
+        query: this.query,
+      });
     },
     fetch() {
       this.$axios.get(`subjects?term=${this.term}`)
         .then(({ data }) => {
           this.subjects = data.data;
-          this.$router.replace({
-            query: {
-              term: this.term,
-            },
-          });
         });
     },
   },
