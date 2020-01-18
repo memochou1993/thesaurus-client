@@ -1,12 +1,10 @@
 <template>
-  <div
-    class="q-pa-md"
-  >
+  <div>
     <div
-      class="row justify-center"
+      class="row justify-center q-my-lg"
     >
       <div
-        class="col-6 q-my-lg"
+        class="col-6"
       >
         <q-form
           @submit="submit()"
@@ -23,10 +21,10 @@
     </div>
     <div
       v-if="subjects.length"
-      class="row justify-center"
+      class="row justify-center q-my-lg"
     >
       <div
-        class="col-6 q-my-lg"
+        class="col-6"
       >
         <q-list
           bordered
@@ -40,7 +38,7 @@
               <q-item-section>
                 <q-item-label>
                   {{
-                    ((subject.term.preferredTerms || [])[0] || {}).termText
+                    o(a(subject.term.preferredTerms)[0]).termText
                   }}
                 </q-item-label>
                 <q-item-label
@@ -48,7 +46,7 @@
                   lines="5"
                 >
                   {{
-                    ((subject.descriptiveNote.descriptiveNotes || [])[0] || {}).noteText
+                    o(a(subject.descriptiveNote.descriptiveNotes)[0]).noteText
                   }}
                 </q-item-label>
               </q-item-section>
@@ -73,13 +71,24 @@ export default {
     };
   },
   methods: {
+    a(array) {
+      return array || [];
+    },
+    o(object) {
+      return object || {};
+    },
     submit() {
       this.fetch();
     },
     fetch() {
-      this.$axios.get(`http://localhost:8080/subjects?term=${this.term}`)
+      this.$axios.get(`subjects?term=${this.term}`)
         .then(({ data }) => {
           this.subjects = data.data;
+          this.$router.replace({
+            query: {
+              term: this.term,
+            },
+          });
         });
     },
   },
