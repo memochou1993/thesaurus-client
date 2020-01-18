@@ -16,6 +16,7 @@
           class="q-mb-lg"
         />
         <SubjectList
+          v-if="!loading"
           class="q-mb-lg"
         />
       </div>
@@ -24,6 +25,9 @@
 </template>
 
 <script>
+import {
+  mapState,
+} from 'vuex';
 import TheSearchBox from '../components/TheSearchBox';
 import SubjectList from '../components/SubjectList';
 
@@ -32,6 +36,11 @@ export default {
   components: {
     TheSearchBox,
     SubjectList,
+  },
+  computed: {
+    ...mapState([
+      'loading',
+    ]),
   },
   methods: {
     refresh() {

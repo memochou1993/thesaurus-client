@@ -16,6 +16,7 @@
 
 <script>
 import {
+  mapMutations,
   mapActions,
 } from 'vuex';
 
@@ -27,11 +28,19 @@ export default {
         return this.$store.state.term;
       },
       set(value) {
-        this.$store.commit('setTerm', value);
+        this.setTerm(value);
       },
     },
+    query() {
+      return this.$route.query;
+    },
+    params() {
+      return {
+        term: this.term,
+      };
+    },
     isSubmitted() {
-      return this.term === this.$route.query.term;
+      return JSON.stringify(this.query) === JSON.stringify(this.params);
     },
     isEmpty() {
       return Object.values(this.params).every(param => !param);
@@ -39,16 +48,23 @@ export default {
     isFrozen() {
       return this.isSubmitted || this.isEmpty;
     },
-    params() {
-      return {
-        term: this.term,
-      };
-    },
+  },
+  mounted() {
+    this.restore();
+    if (!this.isEmpty) {
+      this.search();
+    }
   },
   methods: {
+    ...mapMutations([
+      'setTerm',
+    ]),
     ...mapActions([
       'fetch',
     ]),
+    restore() {
+      this.setTerm(this.query.term || '');
+    },
     submit() {
       if (this.isFrozen) {
         return;

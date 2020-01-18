@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div
+    v-if="query.term"
+  >
     <q-list
       v-if="subjects.length"
       bordered
@@ -49,6 +51,9 @@ export default {
     ...mapState([
       'subjects',
     ]),
+    query() {
+      return this.$route.query;
+    },
   },
   methods: {
     a(array) {

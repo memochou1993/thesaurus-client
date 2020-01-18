@@ -10,6 +10,7 @@ export default new Vuex.Store({
     term: '',
     subjects: [],
     subject: null,
+    loading: false,
   },
   mutations: {
     setTerm(state, term) {
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     setSubject(state, subject) {
       state.subject = subject;
     },
+    setLoading(state, loading) {
+      state.loading = loading;
+    },
   },
   actions: {
     fetch({
@@ -28,6 +32,7 @@ export default new Vuex.Store({
     }, {
       params,
     }) {
+      commit('setLoading', true);
       return new Promise((resolve, reject) => {
         axios({
           method: 'GET',
@@ -40,6 +45,9 @@ export default new Vuex.Store({
           })
           .catch((error) => {
             reject(error);
+          })
+          .finally(() => {
+            commit('setLoading', false);
           });
       });
     },
