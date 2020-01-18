@@ -6,20 +6,58 @@
       class="row justify-center"
     >
       <div
-        class="col-10 col-md-auto"
+        class="col-6 q-my-lg"
       >
-        <q-select
-          v-model="keyword"
-          autofocus
-          fill-input
-          hide-dropdown-icon
-          hide-selected
-          input-debounce="200"
-          outlined
-          use-input
-          :options="options"
-          @filter="filter"
-        />
+        <q-form
+          @submit="submit()"
+        >
+          <q-input
+            autocomplete="off"
+            autofocus
+            outlined
+            spellcheck="false"
+            v-model="term"
+          />
+        </q-form>
+      </div>
+    </div>
+    <div
+      v-if="subjects.length"
+      class="row justify-center"
+    >
+      <div
+        class="col-6 q-my-lg"
+      >
+        <q-list
+          bordered
+          class="rounded-borders"
+        >
+          <div
+            v-for="(subject, index) in subjects"
+            :key="index"
+          >
+            <q-item>
+              <q-item-section>
+                <q-item-label>
+                  {{
+                    ((subject.term.preferredTerms || [])[0] || {}).termText
+                  }}
+                </q-item-label>
+                <q-item-label
+                  caption
+                  lines="5"
+                >
+                  {{
+                    ((subject.descriptiveNote.descriptiveNotes || [])[0] || {}).noteText
+                  }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-separator
+              v-if="index < subjects.length - 1"
+            />
+          </div>
+        </q-list>
       </div>
     </div>
   </div>
@@ -30,39 +68,19 @@ export default {
   name: 'Index',
   data() {
     return {
-      keyword: '',
-      options: [],
+      term: '',
+      subjects: [],
     };
   },
   methods: {
-    setOptions(options) {
-      this.options = options;
+    submit() {
+      this.fetch();
     },
-    setKeyword(keyword) {
-      this.keyword = keyword;
-    },
-    fetch(keyword) {
-      this.$axios.get(`http://localhost:8080/subjects?term=${keyword}`)
+    fetch() {
+      this.$axios.get(`http://localhost:8080/subjects?term=${this.term}`)
         .then(({ data }) => {
-          if (!data.data) {
-            this.setOptions([]);
-            return;
-          }
-          const options = data.data.map((subject) => {
-            return ((((subject || {}).term || {}).preferredTerms || {})[0] || {}).termText;
-          });
-          this.setOptions([...new Set(options)]);
+          this.subjects = data.data;
         });
-    },
-    filter(keyword, update, abort) {
-      if (!keyword) {
-        abort();
-        return;
-      }
-      update(() => {
-        this.fetch(keyword);
-        this.setKeyword(keyword);
-      });
     },
   },
 };
