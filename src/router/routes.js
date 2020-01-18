@@ -5,20 +5,17 @@ const routes = [
     component: () => import('layouts/Layout.vue'),
     children: [
       {
-        path: '/:id', component: () => import('pages/Show.vue'),
+        path: '/',
+        name: 'index',
+        component: () => import('pages/Index.vue'),
       },
       {
-        path: '', component: () => import('pages/Index.vue'),
+        path: '/:id',
+        name: 'show',
+        component: () => import('pages/Show.vue'),
       },
     ],
   },
 ];
-
-routes.push({
-  path: '*',
-  redirect: {
-    path: '/',
-  },
-});
 
 export default routes;

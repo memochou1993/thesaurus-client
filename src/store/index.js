@@ -7,10 +7,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: true,
   state: {
+    term: '',
     subjects: [],
     subject: null,
   },
   mutations: {
+    setTerm(state, term) {
+      state.term = term;
+    },
     setSubjects(state, subjects) {
       state.subjects = subjects;
     },
@@ -38,6 +42,13 @@ export default new Vuex.Store({
             reject(error);
           });
       });
+    },
+    resetState({
+      commit,
+    }) {
+      commit('setTerm', '');
+      commit('setSubjects', []);
+      commit('setSubject', null);
     },
   },
 });

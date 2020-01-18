@@ -21,16 +21,25 @@ import {
 
 export default {
   name: 'TheSearchBox',
-  data() {
-    return {
-      term: '',
-    };
-  },
   computed: {
+    term: {
+      get() {
+        return this.$store.state.term;
+      },
+      set(value) {
+        this.$store.commit('setTerm', value);
+      },
+    },
     isSubmitted() {
       return this.term === this.$route.query.term;
     },
-    query() {
+    isEmpty() {
+      return Object.values(this.params).every(param => !param);
+    },
+    isFrozen() {
+      return this.isSubmitted || this.isEmpty;
+    },
+    params() {
       return {
         term: this.term,
       };
@@ -41,17 +50,20 @@ export default {
       'fetch',
     ]),
     submit() {
+      if (this.isFrozen) {
+        return;
+      }
+      this.search();
       this.locate();
+    },
+    search() {
       this.fetch({
-        param: this.query,
+        params: this.params,
       });
     },
     locate() {
-      if (this.isSubmitted) {
-        return;
-      }
       this.$router.replace({
-        query: this.query,
+        query: this.params,
       });
     },
   },

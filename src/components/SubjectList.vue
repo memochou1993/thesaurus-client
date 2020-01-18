@@ -10,7 +10,7 @@
         :key="index"
       >
         <q-item
-          :to="'/'"
+          :to="`${subject.subjectId}`"
         >
           <q-item-section>
             <q-item-label
