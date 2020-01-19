@@ -39,15 +39,6 @@ export default {
         term: this.term,
       };
     },
-    isSubmitted() {
-      return JSON.stringify(this.query) === JSON.stringify(this.params);
-    },
-    isEmpty() {
-      return Object.values(this.params).every(param => !param);
-    },
-    isFrozen() {
-      return this.isSubmitted || this.isEmpty;
-    },
   },
   watch: {
     $route(to) {
@@ -59,10 +50,11 @@ export default {
     },
   },
   mounted() {
-    this.restore();
-    if (!this.isEmpty) {
-      this.search();
+    if (!this.query.term) {
+      return;
     }
+    this.restore();
+    this.search();
   },
   methods: {
     ...mapMutations([
@@ -76,7 +68,7 @@ export default {
       this.setTerm(this.query.term || '');
     },
     submit() {
-      if (this.isFrozen) {
+      if (!this.term) {
         return;
       }
       this.locate();
