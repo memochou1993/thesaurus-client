@@ -16,6 +16,7 @@
 
 <script>
 import {
+  mapState,
   mapMutations,
   mapActions,
 } from 'vuex';
@@ -23,6 +24,9 @@ import {
 export default {
   name: 'TheSearchBox',
   computed: {
+    ...mapState([
+      'subjects',
+    ]),
     term: {
       get() {
         return this.$store.state.term;
@@ -40,6 +44,9 @@ export default {
   watch: {
     $route(to) {
       if (!to.query.term) {
+        return;
+      }
+      if (this.subjects.length) {
         return;
       }
       this.restore();

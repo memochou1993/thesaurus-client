@@ -125,7 +125,9 @@ export default {
     find() {
       const { subjectId } = this.$route.params;
       if (this.subjects.length) {
-        this.setSubject(this.subjects.find(subject => subject.subjectId === subjectId));
+        this.setSubject(this.subjects.find(subject => subject.subjectId === subjectId) || null);
+      }
+      if (this.subject) {
         return;
       }
       this.fetchSubject({
