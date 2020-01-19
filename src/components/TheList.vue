@@ -105,7 +105,7 @@ export default {
       'setPage',
     ]),
     ...mapActions([
-      'fetch',
+      'fetchSubjects',
     ]),
     a(array) {
       return array || [];
@@ -119,7 +119,7 @@ export default {
         return;
       }
       this.setPage(this.page + 1);
-      this.fetch({
+      this.fetchSubjects({
         params: this.params,
         args: {
           push: true,

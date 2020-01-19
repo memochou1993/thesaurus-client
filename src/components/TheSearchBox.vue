@@ -49,6 +49,15 @@ export default {
       return this.isSubmitted || this.isEmpty;
     },
   },
+  watch: {
+    $route(to) {
+      if (!to.query.term) {
+        return;
+      }
+      this.restore();
+      this.search();
+    },
+  },
   mounted() {
     this.restore();
     if (!this.isEmpty) {
@@ -61,7 +70,7 @@ export default {
       'setTerm',
     ]),
     ...mapActions([
-      'fetch',
+      'fetchSubjects',
     ]),
     restore() {
       this.setTerm(this.query.term || '');
@@ -70,17 +79,16 @@ export default {
       if (this.isFrozen) {
         return;
       }
-      this.setPage(1);
-      this.search();
       this.locate();
     },
     search() {
-      this.fetch({
+      this.setPage(1);
+      this.fetchSubjects({
         params: this.params,
       });
     },
     locate() {
-      this.$router.replace({
+      this.$router.push({
         name: 'index',
         query: this.params,
       });

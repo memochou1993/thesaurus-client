@@ -36,7 +36,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    fetch({
+    fetchSubjects({
       state,
       commit,
     }, {
