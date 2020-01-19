@@ -1,16 +1,16 @@
 <template>
   <div>
-    <SubjectList />
+    <TheList />
   </div>
 </template>
 
 <script>
-import SubjectList from '../components/SubjectList';
+import TheList from '../components/TheList';
 
 export default {
   name: 'Index',
   components: {
-    SubjectList,
+    TheList,
   },
 };
 </script>

@@ -57,6 +57,7 @@ export default {
   },
   methods: {
     ...mapMutations([
+      'setPage',
       'setTerm',
     ]),
     ...mapActions([
@@ -69,6 +70,7 @@ export default {
       if (this.isFrozen) {
         return;
       }
+      this.setPage(1);
       this.search();
       this.locate();
     },

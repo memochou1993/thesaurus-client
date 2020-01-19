@@ -7,12 +7,18 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: true,
   state: {
+    page: 1,
+    pageSize: 10,
     term: '',
     subjects: [],
     subject: null,
     fetched: false,
+    exhausted: false,
   },
   mutations: {
+    setPage(state, page) {
+      state.page = page;
+    },
     setTerm(state, term) {
       state.term = term;
     },
@@ -25,12 +31,17 @@ export default new Vuex.Store({
     setFetched(state, fetched) {
       state.fetched = fetched;
     },
+    setExhausted(state, exhausted) {
+      state.exhausted = exhausted;
+    },
   },
   actions: {
     fetch({
+      state,
       commit,
     }, {
-      params,
+      params = {},
+      args = {},
     }) {
       return new Promise((resolve, reject) => {
         axios({
@@ -39,7 +50,8 @@ export default new Vuex.Store({
           params,
         })
           .then(({ data }) => {
-            commit('setSubjects', data.data);
+            commit('setSubjects', args.push ? [...state.subjects, ...data.data] : data.data);
+            commit('setExhausted', !data.data.length || (data.data.length < state.pageSize));
             resolve(data);
           })
           .catch((error) => {
@@ -49,13 +61,6 @@ export default new Vuex.Store({
             commit('setFetched', true);
           });
       });
-    },
-    resetState({
-      commit,
-    }) {
-      commit('setTerm', '');
-      commit('setSubjects', []);
-      commit('setSubject', null);
     },
   },
 });
