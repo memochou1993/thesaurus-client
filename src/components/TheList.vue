@@ -54,7 +54,11 @@
       <div
         v-else
       >
-        no data
+        <div
+          class="text-center text-caption"
+        >
+          No results found for <b>{{ query.term }}</b>.
+        </div>
       </div>
     </div>
     <div
