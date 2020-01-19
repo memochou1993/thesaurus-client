@@ -118,11 +118,13 @@ export default {
   methods: {
     ...mapMutations([
       'setSubject',
+      'setFetched',
     ]),
     ...mapActions([
       'fetchSubject',
     ]),
     find() {
+      this.setFetched(false);
       const { subjectId } = this.$route.params;
       if (this.subjects.length) {
         this.setSubject(this.subjects.find(subject => subject.subjectId === subjectId) || null);
