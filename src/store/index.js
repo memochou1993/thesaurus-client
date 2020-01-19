@@ -13,7 +13,7 @@ export default new Vuex.Store({
     subjects: [],
     subject: null,
     fetched: false,
-    exhausted: false,
+    completed: false,
   },
   mutations: {
     setPage(state, page) {
@@ -31,8 +31,8 @@ export default new Vuex.Store({
     setFetched(state, fetched) {
       state.fetched = fetched;
     },
-    setExhausted(state, exhausted) {
-      state.exhausted = exhausted;
+    setCompleted(state, completed) {
+      state.completed = completed;
     },
   },
   actions: {
@@ -40,7 +40,7 @@ export default new Vuex.Store({
       state,
       commit,
     }, {
-      params = {},
+      params,
       args = {},
     }) {
       return new Promise((resolve, reject) => {
@@ -51,10 +51,33 @@ export default new Vuex.Store({
         })
           .then(({ data }) => {
             commit('setSubjects', args.push ? [...state.subjects, ...data.data] : data.data);
-            commit('setExhausted', !data.data.length || (data.data.length < state.pageSize));
+            commit('setCompleted', !data.data.length || (data.data.length < state.pageSize));
             resolve(data);
           })
           .catch((error) => {
+            reject(error);
+          })
+          .finally(() => {
+            commit('setFetched', true);
+          });
+      });
+    },
+    fetchSubject({
+      commit,
+    }, {
+      props,
+    }) {
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'GET',
+          url: `subjects/${props.subjectId}`,
+        })
+          .then(({ data }) => {
+            commit('setSubject', data.data);
+            resolve(data);
+          })
+          .catch((error) => {
+            commit('setCompleted', false);
             reject(error);
           })
           .finally(() => {

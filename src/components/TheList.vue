@@ -75,6 +75,7 @@ import {
   mapMutations,
   mapActions,
 } from 'vuex';
+import common from '../mixins/common';
 import AppSpinner from '../components/AppSpinner';
 
 export default {
@@ -82,13 +83,16 @@ export default {
   components: {
     AppSpinner,
   },
+  mixins: [
+    common,
+  ],
   computed: {
     ...mapState([
       'page',
       'term',
       'subjects',
       'fetched',
-      'exhausted',
+      'completed',
     ]),
     query() {
       return {
@@ -104,14 +108,8 @@ export default {
     ...mapActions([
       'fetchSubjects',
     ]),
-    a(array) {
-      return array || [];
-    },
-    o(object) {
-      return object || {};
-    },
     load(index, done) {
-      if (this.exhausted) {
+      if (this.completed) {
         done(true);
         return;
       }
