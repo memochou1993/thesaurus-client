@@ -136,7 +136,7 @@ export default {
         },
       })
         .catch(() => {
-          this.$router.push({
+          this.$router.replace({
             name: 'index',
           });
         });
