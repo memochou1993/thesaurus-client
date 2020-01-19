@@ -21,17 +21,20 @@
           />
         </div>
       </div>
+      <AppPageScroller />
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
 import TheSearchBox from '../components/TheSearchBox';
+import AppPageScroller from '../components/AppPageScroller';
 
 export default {
   name: 'Layout',
   components: {
     TheSearchBox,
+    AppPageScroller,
   },
   beforeRouteUpdate(to, from, next) {
     this.$q.loadingBar.start();
