@@ -68,6 +68,9 @@ export default {
       if (!this.term) {
         return;
       }
+      if (this.term === this.$route.query.term) {
+        return;
+      }
       this.locate();
     },
     search() {
