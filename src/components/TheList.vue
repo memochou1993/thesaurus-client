@@ -26,17 +26,16 @@
                 <q-item-label
                   overline
                 >
-                  <span
+                  <div
                     v-html="o(a(subject.term.preferredTerms)[0]).termText"
                   />
                 </q-item-label>
                 <q-item-label
                   caption
                   lines="5"
+                  class="text-justify"
                 >
-                  <span
-                    v-html="o(a(subject.descriptiveNote.descriptiveNotes)[0]).noteText"
-                  />
+                  {{ o(a(subject.descriptiveNote.descriptiveNotes)[0]).noteText }}
                 </q-item-label>
               </q-item-section>
             </q-item>
