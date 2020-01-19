@@ -48,14 +48,7 @@
         <template
           v-slot:loading
         >
-          <div
-            class="row justify-center q-my-md"
-          >
-            <q-spinner-dots
-              color="primary"
-              size="40px"
-            />
-          </div>
+          <AppSpinner />
         </template>
       </q-infinite-scroll>
       <div
@@ -67,7 +60,7 @@
     <div
       v-else
     >
-      loading
+      <AppSpinner />
     </div>
   </div>
 </template>
@@ -78,9 +71,13 @@ import {
   mapMutations,
   mapActions,
 } from 'vuex';
+import AppSpinner from '../components/AppSpinner';
 
 export default {
   name: 'TheList',
+  components: {
+    AppSpinner,
+  },
   computed: {
     ...mapState([
       'page',
