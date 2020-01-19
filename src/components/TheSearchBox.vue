@@ -79,6 +79,7 @@ export default {
     },
     locate() {
       this.$router.replace({
+        name: 'index',
         query: this.params,
       });
     },
