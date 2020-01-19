@@ -109,7 +109,7 @@ export default {
     ]),
     load(index, done) {
       if (this.completed) {
-        done(true);
+        done();
         return;
       }
       this.setPage(this.page + 1);
