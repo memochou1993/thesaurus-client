@@ -32,9 +32,6 @@ export default {
       },
     },
     query() {
-      return this.$route.query;
-    },
-    params() {
       return {
         term: this.term,
       };
@@ -50,7 +47,7 @@ export default {
     },
   },
   mounted() {
-    if (!this.query.term) {
+    if (!this.$route.query.term) {
       return;
     }
     this.restore();
@@ -65,7 +62,7 @@ export default {
       'fetchSubjects',
     ]),
     restore() {
-      this.setTerm(this.query.term || '');
+      this.setTerm(this.$route.query.term || '');
     },
     submit() {
       if (!this.term) {
@@ -76,13 +73,13 @@ export default {
     search() {
       this.setPage(1);
       this.fetchSubjects({
-        params: this.params,
+        params: this.query,
       });
     },
     locate() {
       this.$router.push({
         name: 'index',
-        query: this.params,
+        query: this.query,
       });
     },
   },

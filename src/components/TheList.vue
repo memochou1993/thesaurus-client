@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="query.term"
+    v-if="$route.query.term"
   >
     <div
       v-if="fetched"
@@ -57,7 +57,7 @@
         <div
           class="text-center text-caption"
         >
-          No results found for <b>{{ query.term }}</b>.
+          No results found for <b>{{ $route.query.term }}</b>.
         </div>
       </div>
     </div>
@@ -91,9 +91,6 @@ export default {
       'exhausted',
     ]),
     query() {
-      return this.$route.query;
-    },
-    params() {
       return {
         page: this.page,
         term: this.term,
@@ -120,7 +117,7 @@ export default {
       }
       this.setPage(this.page + 1);
       this.fetchSubjects({
-        params: this.params,
+        params: this.query,
         args: {
           push: true,
         },
