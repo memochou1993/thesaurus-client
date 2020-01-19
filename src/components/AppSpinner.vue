@@ -1,6 +1,6 @@
 <template>
   <div
-    class="text-center"
+    class="q-my-lg text-center"
   >
     <q-spinner-dots
       color="primary"

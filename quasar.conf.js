@@ -46,7 +46,17 @@ module.exports = function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'LoadingBar'
+      ],
+
+      config: {
+        loadingBar: {
+          color: 'primary',
+          size: '5px',
+          skipHijack: true
+        }
+      }
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie

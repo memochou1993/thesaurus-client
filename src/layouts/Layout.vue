@@ -8,14 +8,10 @@
           class="col-md-6 col-sm-8 col-xs-10 q-py-xl"
         >
           <div
-            class="q-mb-lg"
+            class="q-mb-lg text-center text-h5 cursor-pointer"
             @click="refresh()"
           >
-            <div
-              class="text-center text-h5 cursor-pointer"
-            >
-              Art & Architecture Thesaurus
-            </div>
+            Art & Architecture Thesaurus
           </div>
           <TheSearchBox
             class="q-mb-lg"
@@ -36,6 +32,11 @@ export default {
   name: 'Layout',
   components: {
     TheSearchBox,
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.$q.loadingBar.start();
+    this.$q.loadingBar.stop();
+    next();
   },
   methods: {
     refresh() {
