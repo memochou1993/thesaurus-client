@@ -16,7 +16,7 @@ export default new VueRouter({
           component: () => import('pages/Index.vue'),
         },
         {
-          path: '/:id',
+          path: '/:subjectId',
           name: 'show',
           component: () => import('pages/Show.vue'),
         },
