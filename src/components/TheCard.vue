@@ -4,84 +4,146 @@
       v-if="subject"
       bordered
       flat
+      class="text-justify"
     >
-      <q-card-section>
+      <q-card-section
+        class="q-pb-none"
+      >
         <div
           v-html="o(a(subject.term.preferredTerms)[0]).termText"
           class="text-center text-h6 text-weight-regular"
         />
       </q-card-section>
       <q-card-section
-        class="q-pt-none"
+        class="q-py-xs"
       >
         <div
-          class="text-subtitle1"
+          class="q-py-sm text-subtitle1"
         >
           ID:
         </div>
         <div
-          class="indent"
+          class="q-px-md"
         >
           {{ subject.subjectId }}
         </div>
       </q-card-section>
       <q-card-section
-        class="q-pt-none"
+        class="q-py-xs"
       >
         <div
-          class="text-subtitle1"
+          class="q-py-sm text-subtitle1"
         >
           Note:
         </div>
         <div
-          class="indent text-justify"
+          class="indent1"
         >
           {{ o(a(subject.descriptiveNote.descriptiveNotes)[0]).noteText }}
         </div>
       </q-card-section>
       <q-card-section
-        class="q-pt-none"
+        v-if="terms.length"
+        class="q-py-xs"
       >
         <div
-          class="text-subtitle1"
+          class="q-py-sm text-subtitle1"
         >
           Terms:
         </div>
         <div
-          v-for="(term, index) in terms"
-          :key="index"
+          class="q-px-md"
         >
-          <div class="row">
-            <div class="outdent">
-              {{ term.termText }}
-            </div>
+          <div
+            v-for="(term, index) in terms"
+            :key="index"
+          >
+            <q-separator
+              spaced
+            />
             <div
-              v-for="(language, index) in a(term.termLanguage.termLanguages)"
-              :key="index"
+              class="row"
             >
-              <q-badge
-                color="blue"
-                outline
-                class="q-mx-xs"
+              <div
+                class="col-6"
               >
-                {{ language.language.split('/').pop() }}, {{ language.preferred }}
-              </q-badge>
+                {{ term.termText }}
+              </div>
+              <div
+                class="col-6"
+              >
+                <div
+                  v-for="(language, index) in term.termLanguage.termLanguages"
+                  :key="index"
+                >
+                  <div
+                    class="row"
+                  >
+                    <div
+                      class="col-6"
+                    >
+                      <q-badge
+                        color="green"
+                      >
+                        {{ language.language.split('/').pop().split(' ').shift() }}
+                      </q-badge>
+                    </div>
+                    <div
+                      class="col-6"
+                    >
+                      <q-badge
+                        :color="`${language.preferred === 'Preferred' ? 'red' : 'orange'}`"
+                        transparent
+                      >
+                        {{ language.preferred }}
+                      </q-badge>
+                    </div>
+                  </div>
+                  <q-separator
+                    v-if="index < term.termLanguage.termLanguages.length - 1"
+                    spaced
+                  />
+                </div>
+              </div>
             </div>
+            <q-separator
+              v-if="index === terms.length - 1"
+              spaced
+            />
           </div>
         </div>
       </q-card-section>
       <q-card-section
-        class="q-pt-none"
+        v-if="a(subject.descriptiveNote.descriptiveNotes).length"
+        class="q-py-xs"
       >
         <div
-          class="text-subtitle1"
+          class="q-py-sm text-subtitle1"
         >
           Additional Notes:
         </div>
         <div
-          class="indent text-justify"
+          class="q-px-md"
         >
-          {{ o(a(subject.descriptiveNote.descriptiveNotes)[1]).noteText }}
+          <div
+            v-for="(descriptiveNote, index) in subject.descriptiveNote.descriptiveNotes"
+            :key="index"
+          >
+            <div
+              class="q-pt-sm text-body2 text-weight-medium"
+            >
+              {{ descriptiveNote.noteLanguage }}
+            </div>
+            <div
+              class="q-py-sm indent1"
+            >
+              {{ descriptiveNote.noteText }}
+            </div>
+            <q-separator
+              v-if="index < subject.descriptiveNote.descriptiveNotes.length - 1"
+              spaced
+            />
+          </div>
         </div>
       </q-card-section>
     </q-card>
@@ -162,11 +224,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.indent {
+.indent1 {
   text-indent: 1em;
 }
-.outdent {
+.indent2 {
+  text-indent: 2em;
+}
+
+.outdent1 {
   text-indent: -1em;
   margin-left: 2em;
+}
+.outdent2 {
+  text-indent: -1em;
+  margin-left: 3em;
 }
 </style>
