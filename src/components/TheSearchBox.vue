@@ -65,8 +65,8 @@ export default {
   methods: {
     ...mapMutations([
       'setPage',
-      'setTerm',
       'setSubjects',
+      'setTerm',
     ]),
     ...mapActions([
       'fetchSubjects',

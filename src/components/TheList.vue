@@ -87,11 +87,11 @@ export default {
   ],
   computed: {
     ...mapState([
-      'page',
-      'term',
-      'subjects',
-      'fetched',
       'completed',
+      'fetched',
+      'page',
+      'subjects',
+      'term',
     ]),
     query() {
       return {
