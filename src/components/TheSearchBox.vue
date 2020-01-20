@@ -33,7 +33,7 @@ export default {
     },
     query() {
       return {
-        term: this.term,
+        term: this.term.trim(),
       };
     },
   },
