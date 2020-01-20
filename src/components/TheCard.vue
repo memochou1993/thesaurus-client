@@ -65,12 +65,12 @@
               class="row"
             >
               <div
-                class="col-6"
+                class="col-4"
               >
                 {{ term.termText }}
               </div>
               <div
-                class="col-6"
+                class="col-8"
               >
                 <div
                   v-for="(language, index) in term.termLanguage.termLanguages"
@@ -80,22 +80,35 @@
                     class="row"
                   >
                     <div
-                      class="col-6"
+                      class="col-4"
                     >
                       <q-badge
                         color="green"
+                        class="text-capitalize"
                       >
                         {{ language.language.split('/').pop().split(' ').shift() }}
                       </q-badge>
                     </div>
                     <div
-                      class="col-6"
+                      class="col-4"
                     >
                       <q-badge
                         :color="`${language.preferred === 'Preferred' ? 'red' : 'orange'}`"
                         transparent
+                        class="text-capitalize"
                       >
                         {{ language.preferred }}
+                      </q-badge>
+                    </div>
+                    <div
+                      class="col-4"
+                    >
+                      <q-badge
+                        color="blue"
+                        transparent
+                        class="text-capitalize"
+                      >
+                        {{ language.partOfSpeech }}
                       </q-badge>
                     </div>
                   </div>
