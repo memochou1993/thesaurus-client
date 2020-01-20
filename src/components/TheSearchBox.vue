@@ -51,16 +51,16 @@ export default {
       if (!to.query.term) {
         return;
       }
-      this.restore();
-      this.search();
+      this.restoreTerm();
+      this.searchSubjects();
     },
   },
   mounted() {
     if (!this.$route.query.term) {
       return;
     }
-    this.restore();
-    this.search();
+    this.restoreTerm();
+    this.searchSubjects();
   },
   methods: {
     ...mapMutations([
@@ -71,9 +71,6 @@ export default {
     ...mapActions([
       'fetchSubjects',
     ]),
-    restore() {
-      this.setTerm(this.$route.query.term || '');
-    },
     submit() {
       if (!this.term) {
         return;
@@ -83,7 +80,16 @@ export default {
       }
       this.locate();
     },
-    search() {
+    locate() {
+      this.$router.push({
+        name: 'index',
+        query: this.query,
+      });
+    },
+    restoreTerm() {
+      this.setTerm(this.$route.query.term || '');
+    },
+    searchSubjects() {
       this.setPage(1);
       this.fetchSubjects({
         params: this.query,
@@ -91,12 +97,6 @@ export default {
         .then(({ data }) => {
           this.setSubjects(data);
         });
-    },
-    locate() {
-      this.$router.push({
-        name: 'index',
-        query: this.query,
-      });
     },
   },
 };

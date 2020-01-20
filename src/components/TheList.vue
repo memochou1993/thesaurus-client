@@ -9,7 +9,7 @@
         v-if="subjects.length"
         :debounce="250"
         :offset="500"
-        @load="load"
+        @load="loadSubjects"
       >
         <q-list
           bordered
@@ -108,7 +108,7 @@ export default {
     ...mapActions([
       'fetchSubjects',
     ]),
-    load(index, done) {
+    loadSubjects(index, done) {
       if (this.completed) {
         done();
         return;
