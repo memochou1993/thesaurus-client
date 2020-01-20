@@ -70,6 +70,20 @@
           </div>
         </div>
       </q-card-section>
+      <q-card-section
+        class="q-pt-none"
+      >
+        <div
+          class="text-subtitle1"
+        >
+          Additional Notes:
+        </div>
+        <div
+          class="indent text-justify"
+        >
+          {{ o(a(subject.descriptiveNote.descriptiveNotes)[1]).noteText }}
+        </div>
+      </q-card-section>
     </q-card>
     <AppSpinner
       v-else
@@ -129,7 +143,7 @@ export default {
       if (this.subjects.length) {
         this.setSubject(this.subjects.find(subject => subject.subjectId === subjectId) || null);
       }
-      if (this.subject) {
+      if (this.o(this.subject).subjectId === subjectId) {
         return;
       }
       this.fetchSubject({
