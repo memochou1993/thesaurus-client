@@ -66,6 +66,7 @@ export default {
     ...mapMutations([
       'setPage',
       'setTerm',
+      'setSubjects',
     ]),
     ...mapActions([
       'fetchSubjects',
@@ -86,7 +87,10 @@ export default {
       this.setPage(1);
       this.fetchSubjects({
         params: this.query,
-      });
+      })
+        .then(({ data }) => {
+          this.setSubjects(data);
+        });
     },
     locate() {
       this.$router.push({

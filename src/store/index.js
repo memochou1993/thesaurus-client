@@ -41,7 +41,6 @@ export default new Vuex.Store({
       commit,
     }, {
       params,
-      args = {},
     }) {
       return new Promise((resolve, reject) => {
         axios({
@@ -50,7 +49,6 @@ export default new Vuex.Store({
           params,
         })
           .then(({ data }) => {
-            commit('setSubjects', args.push ? [...state.subjects, ...data.data] : data.data);
             commit('setCompleted', !data.data.length || (data.data.length < state.pageSize));
             resolve(data);
           })

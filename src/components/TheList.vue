@@ -103,6 +103,7 @@ export default {
   methods: {
     ...mapMutations([
       'setPage',
+      'setSubjects',
     ]),
     ...mapActions([
       'fetchSubjects',
@@ -115,11 +116,9 @@ export default {
       this.setPage(this.page + 1);
       this.fetchSubjects({
         params: this.query,
-        args: {
-          push: true,
-        },
       })
-        .then(() => {
+        .then(({ data }) => {
+          this.setSubjects([...this.subjects, ...data]);
           done();
         });
     },
