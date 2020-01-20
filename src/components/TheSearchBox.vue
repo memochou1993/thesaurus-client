@@ -7,9 +7,18 @@
         v-model="term"
         autocomplete="off"
         autofocus
+        dense
         outlined
         spellcheck="false"
-      />
+      >
+        <template v-slot:append>
+          <q-icon
+            name="search"
+            class="cursor-pointer"
+            @click="submit()"
+          />
+        </template>
+      </q-input>
     </q-form>
   </div>
 </template>
