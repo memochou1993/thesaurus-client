@@ -57,6 +57,7 @@ export default {
   },
   methods: {
     ...mapMutations([
+      'setFetched',
       'setPage',
       'setSubjects',
     ]),
@@ -71,6 +72,7 @@ export default {
       if (!term) {
         return;
       }
+      this.setFetched(false);
       this.setTerm(term);
       this.searchSubjects();
     },

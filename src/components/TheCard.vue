@@ -136,6 +136,7 @@ export default {
       this.relatedSubjects = relatedSubjects;
     },
     initialize() {
+      this.setFetched(false);
       this.setRelatedSubjects([]);
       this.findSubjects();
     },
