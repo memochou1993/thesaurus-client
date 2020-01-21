@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-card
-      v-if="subject"
+      v-if="fetched"
       bordered
       flat
       class="text-justify"
@@ -37,7 +37,7 @@
           Note:
         </div>
         <div
-          class="indent1"
+          class="indent"
         >
           {{ o(a(subject.descriptiveNote.descriptiveNotes)[0]).noteText }}
         </div>
@@ -148,7 +148,7 @@
               {{ descriptiveNote.noteLanguage }}
             </div>
             <div
-              class="q-py-sm indent1"
+              class="q-py-sm indent"
             >
               {{ descriptiveNote.noteText }}
             </div>
@@ -185,6 +185,7 @@ export default {
   ],
   computed: {
     ...mapState([
+      'fetched',
       'subjects',
       'subject',
     ]),
@@ -206,19 +207,19 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'setSubject',
       'setFetched',
+      'setSubject',
     ]),
     ...mapActions([
       'fetchSubject',
     ]),
     find() {
-      this.setFetched(false);
       const { subjectId } = this.$route.params;
       if (this.subjects.length) {
         this.setSubject(this.subjects.find(subject => subject.subjectId === subjectId) || null);
       }
       if (this.o(this.subject).subjectId === subjectId) {
+        this.setFetched(true);
         return;
       }
       this.fetchSubject({
@@ -237,19 +238,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.indent1 {
+.indent {
   text-indent: 1em;
 }
-.indent2 {
-  text-indent: 2em;
-}
 
-.outdent1 {
+.outdent {
   text-indent: -1em;
   margin-left: 2em;
-}
-.outdent2 {
-  text-indent: -1em;
-  margin-left: 3em;
 }
 </style>

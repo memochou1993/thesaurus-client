@@ -27,6 +27,9 @@
 </template>
 
 <script>
+import {
+  mapMutations,
+} from 'vuex';
 import TheSearchBox from '../components/TheSearchBox';
 import AppPageScroller from '../components/AppPageScroller';
 
@@ -37,11 +40,15 @@ export default {
     AppPageScroller,
   },
   beforeRouteUpdate(to, from, next) {
+    this.setFetched(false);
     this.$q.loadingBar.start();
     this.$q.loadingBar.stop();
     next();
   },
   methods: {
+    ...mapMutations([
+      'setFetched',
+    ]),
     refresh() {
       window.location.href = '/';
     },

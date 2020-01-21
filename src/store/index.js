@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import common from '../helpers/common';
 
 Vue.use(Vuex);
 
@@ -54,8 +55,9 @@ export default new Vuex.Store({
             commit('setCompleted', false);
             reject(error);
           })
-          .finally(() => {
-            commit('setFetched', true);
+          .finally(async () => {
+            await common.defer(0.1);
+            await commit('setFetched', true);
           });
       });
     },
@@ -76,10 +78,12 @@ export default new Vuex.Store({
             resolve(data);
           })
           .catch((error) => {
+            commit('setCompleted', false);
             reject(error);
           })
-          .finally(() => {
-            commit('setFetched', true);
+          .finally(async () => {
+            await common.defer(0.1);
+            await commit('setFetched', true);
           });
       });
     },

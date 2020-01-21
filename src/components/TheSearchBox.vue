@@ -25,6 +25,7 @@
 
 <script>
 import {
+  mapState,
   mapMutations,
   mapActions,
 } from 'vuex';
@@ -32,6 +33,9 @@ import {
 export default {
   name: 'TheSearchBox',
   computed: {
+    ...mapState([
+      'fetched',
+    ]),
     term: {
       get() {
         return this.$store.state.term;
@@ -48,18 +52,20 @@ export default {
   },
   watch: {
     $route(to) {
-      if (!to.query.term) {
+      const { term } = to.query;
+      if (!term) {
         return;
       }
-      this.restoreTerm();
+      this.setTerm(term);
       this.searchSubjects();
     },
   },
   mounted() {
-    if (!this.$route.query.term) {
+    const { term } = this.$route.query;
+    if (!term) {
       return;
     }
-    this.restoreTerm();
+    this.setTerm(term);
     this.searchSubjects();
   },
   methods: {
@@ -85,9 +91,6 @@ export default {
         name: 'index',
         query: this.query,
       });
-    },
-    restoreTerm() {
-      this.setTerm(this.$route.query.term || '');
     },
     searchSubjects() {
       this.setPage(1);
