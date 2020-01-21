@@ -56,8 +56,11 @@
         <div
           class="text-center text-caption"
         >
-          No results found for <b>{{ $route.query.term }}</b>.
+
         </div>
+        <AppMessage
+          :text="`No results found for <b>${$route.query.term}</b>.`"
+        />
       </div>
     </div>
     <div
@@ -76,11 +79,13 @@ import {
 } from 'vuex';
 import parser from '../mixins/parser';
 import AppSpinner from '../components/AppSpinner';
+import AppMessage from '../components/AppMessage';
 
 export default {
   name: 'TheList',
   components: {
     AppSpinner,
+    AppMessage,
   },
   mixins: [
     parser,

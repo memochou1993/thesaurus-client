@@ -211,11 +211,9 @@
     <div
       v-else
     >
-      <div
-        class="text-center text-caption"
-      >
-        No results found for <b>{{ $route.params.subjectId }}</b>.
-      </div>
+      <AppMessage
+        :text="`No results found for <b>${$route.params.subjectId}</b>.`"
+      />
     </div>
   </div>
 </template>
@@ -228,11 +226,13 @@ import {
 } from 'vuex';
 import parser from '../mixins/parser';
 import AppSpinner from '../components/AppSpinner';
+import AppMessage from '../components/AppMessage';
 
 export default {
   name: 'TheCard',
   components: {
     AppSpinner,
+    AppMessage,
   },
   mixins: [
     parser,
