@@ -172,7 +172,7 @@ import {
   mapMutations,
   mapActions,
 } from 'vuex';
-import common from '../mixins/common';
+import parser from '../mixins/parser';
 import AppSpinner from '../components/AppSpinner';
 
 export default {
@@ -181,7 +181,7 @@ export default {
     AppSpinner,
   },
   mixins: [
-    common,
+    parser,
   ],
   computed: {
     ...mapState([

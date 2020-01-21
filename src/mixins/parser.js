@@ -1,4 +1,4 @@
-const common = {
+const parser = {
   methods: {
     a(array) {
       return array || [];
@@ -9,4 +9,4 @@ const common = {
   },
 };
 
-export default common;
+export default parser;
