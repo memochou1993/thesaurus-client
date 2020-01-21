@@ -4,10 +4,10 @@
       v-if="fetched"
       bordered
       flat
-      class="text-justify"
+      class="q-py-lg text-justify"
     >
       <q-card-section
-        class="q-pb-none"
+        class="q-py-xs"
       >
         <div
           v-html="o(a(subject.term.preferredTerms)[0]).termText"
@@ -26,20 +26,6 @@
           class="q-px-md"
         >
           {{ subject.subjectId }}
-        </div>
-      </q-card-section>
-      <q-card-section
-        class="q-py-xs"
-      >
-        <div
-          class="q-py-sm text-subtitle1"
-        >
-          Note:
-        </div>
-        <div
-          class="indent"
-        >
-          {{ o(a(subject.descriptiveNote.descriptiveNotes)[0]).noteText }}
         </div>
       </q-card-section>
       <q-card-section
@@ -133,7 +119,7 @@
         <div
           class="q-py-sm text-subtitle1"
         >
-          Additional Notes:
+          Notes:
         </div>
         <div
           class="q-px-md"
