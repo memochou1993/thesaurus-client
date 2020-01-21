@@ -44,7 +44,6 @@ export default new Vuex.Store({
           url: `subjects/${props.subjectId}`,
         })
           .then(({ data }) => {
-            commit('setSubject', data.data);
             resolve(data);
           })
           .catch((error) => {
