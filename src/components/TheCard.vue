@@ -31,178 +31,21 @@
             {{ subject.subjectId }}
           </div>
         </q-card-section>
-        <q-card-section
+        <TheSectionNote
+          v-if="notes.length"
+          :notes="notes"
+          class="q-py-xs"
+        />
+        <TheSectionTerm
           v-if="terms.length"
+          :terms="terms"
           class="q-py-xs"
-        >
-          <div
-            class="q-py-sm text-subtitle1"
-          >
-            Terms:
-          </div>
-          <div
-            class="q-px-md"
-          >
-            <div
-              v-for="(term, index) in terms"
-              :key="index"
-            >
-              <q-separator
-                spaced
-              />
-              <div
-                class="row"
-              >
-                <div
-                  class="col-4"
-                >
-                  {{ term.termText }}
-                </div>
-                <div
-                  class="col-8"
-                >
-                  <div
-                    v-for="(language, index) in term.termLanguage.termLanguages"
-                    :key="index"
-                  >
-                    <div
-                      class="row"
-                    >
-                      <div
-                        class="col-4"
-                      >
-                        <q-badge
-                          color="green"
-                          class="text-capitalize"
-                        >
-                          {{ language.language.split('/').pop().split(' ').shift() }}
-                        </q-badge>
-                      </div>
-                      <div
-                        class="col-4"
-                      >
-                        <q-badge
-                          :color="`${language.preferred === 'Preferred' ? 'red' : 'orange'}`"
-                          transparent
-                          class="text-capitalize"
-                        >
-                          {{ language.preferred }}
-                        </q-badge>
-                      </div>
-                      <div
-                        class="col-4"
-                      >
-                        <q-badge
-                          color="blue"
-                          transparent
-                          class="text-capitalize"
-                        >
-                          {{ language.partOfSpeech }}
-                        </q-badge>
-                      </div>
-                    </div>
-                    <q-separator
-                      v-if="index < term.termLanguage.termLanguages.length - 1"
-                      spaced
-                    />
-                  </div>
-                </div>
-              </div>
-              <q-separator
-                v-if="index === terms.length - 1"
-                spaced
-              />
-            </div>
-          </div>
-        </q-card-section>
-        <q-card-section
-          v-if="a(subject.descriptiveNote.descriptiveNotes).length"
-          class="q-py-xs"
-        >
-          <div
-            class="q-py-sm text-subtitle1"
-          >
-            Notes:
-          </div>
-          <div
-            class="q-px-md"
-          >
-            <div
-              v-for="(descriptiveNote, index) in subject.descriptiveNote.descriptiveNotes"
-              :key="index"
-            >
-              <div
-                class="q-pt-sm text-body2 text-weight-medium"
-              >
-                {{ descriptiveNote.noteLanguage }}
-              </div>
-              <div
-                class="q-py-sm indent"
-              >
-                {{ descriptiveNote.noteText }}
-              </div>
-              <q-separator
-                v-if="index < subject.descriptiveNote.descriptiveNotes.length - 1"
-                spaced
-              />
-            </div>
-          </div>
-        </q-card-section>
-        <q-card-section
+        />
+        <TheSectionRelatedSubject
           v-if="relatedSubjects.length"
+          :relatedSubjects="relatedSubjects"
           class="q-py-xs"
-        >
-          <div
-            class="q-py-sm text-subtitle1"
-          >
-            Related Subjects:
-          </div>
-          <div
-            class="q-px-md"
-          >
-            <div
-              v-for="(relatedSubject, index) in relatedSubjects"
-              :key="index"
-            >
-              <q-separator
-                spaced
-              />
-              <div
-                class="row"
-              >
-                <div
-                  class="col-4"
-                >
-                  <q-badge
-                    color="purple"
-                    transparent
-                  >
-                    {{ relatedSubject.relationshipType }}
-                  </q-badge>
-                </div>
-                <div
-                  class="col-8"
-                >
-                  <q-btn
-                    color="brown"
-                    flat
-                    no-caps
-                    size="sm"
-                    :to="`/${relatedSubject.subjectId}`"
-                  >
-                    <div
-                      v-html="o(a(relatedSubject.term.preferredTerms)[0]).termText"
-                    />
-                  </q-btn>
-                </div>
-              </div>
-              <q-separator
-                v-if="index === relatedSubjects.length - 1"
-                spaced
-              />
-            </div>
-          </div>
-        </q-card-section>
+        />
       </q-card>
       <AppSpinner
         v-else
@@ -225,14 +68,20 @@ import {
   mapActions,
 } from 'vuex';
 import parser from '../mixins/parser';
-import AppSpinner from '../components/AppSpinner';
 import AppMessage from '../components/AppMessage';
+import AppSpinner from '../components/AppSpinner';
+import TheSectionNote from '../components/TheSectionNote';
+import TheSectionRelatedSubject from '../components/TheSectionRelatedSubject';
+import TheSectionTerm from '../components/TheSectionTerm';
 
 export default {
   name: 'TheCard',
   components: {
-    AppSpinner,
     AppMessage,
+    AppSpinner,
+    TheSectionNote,
+    TheSectionRelatedSubject,
+    TheSectionTerm,
   },
   mixins: [
     parser,
@@ -248,6 +97,9 @@ export default {
       'subjects',
       'subject',
     ]),
+    notes() {
+      return this.a(this.subject.descriptiveNote.descriptiveNotes);
+    },
     terms() {
       const terms = [
         ...this.a(this.subject.term.preferredTerms),

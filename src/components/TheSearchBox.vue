@@ -52,7 +52,7 @@ export default {
       this.initialize();
     },
   },
-  mounted() {
+  created() {
     this.initialize();
   },
   methods: {

@@ -78,14 +78,14 @@ import {
   mapActions,
 } from 'vuex';
 import parser from '../mixins/parser';
-import AppSpinner from '../components/AppSpinner';
 import AppMessage from '../components/AppMessage';
+import AppSpinner from '../components/AppSpinner';
 
 export default {
   name: 'TheList',
   components: {
-    AppSpinner,
     AppMessage,
+    AppSpinner,
   },
   mixins: [
     parser,
