@@ -14,7 +14,6 @@ export default new Vuex.Store({
     pageSize: 10,
     subject: null,
     subjects: [],
-    term: '',
   },
   mutations: {
     setCompleted(state, completed) {
@@ -31,9 +30,6 @@ export default new Vuex.Store({
     },
     setSubjects(state, subjects) {
       state.subjects = subjects;
-    },
-    setTerm(state, term) {
-      state.term = term;
     },
   },
   actions: {

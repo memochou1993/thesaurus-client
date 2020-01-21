@@ -32,18 +32,15 @@ import {
 
 export default {
   name: 'TheSearchBox',
+  data() {
+    return {
+      term: '',
+    };
+  },
   computed: {
     ...mapState([
       'fetched',
     ]),
-    term: {
-      get() {
-        return this.$store.state.term;
-      },
-      set(value) {
-        this.setTerm(value);
-      },
-    },
     query() {
       return {
         term: this.term.trim(),
@@ -62,11 +59,13 @@ export default {
     ...mapMutations([
       'setPage',
       'setSubjects',
-      'setTerm',
     ]),
     ...mapActions([
       'fetchSubjects',
     ]),
+    setTerm(term) {
+      this.term = term;
+    },
     initialize() {
       const { term } = this.$route.query;
       if (!term) {
