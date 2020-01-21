@@ -51,22 +51,12 @@ export default {
     },
   },
   watch: {
-    $route(to) {
-      const { term } = to.query;
-      if (!term) {
-        return;
-      }
-      this.setTerm(term);
-      this.searchSubjects();
+    $route() {
+      this.initialize();
     },
   },
   mounted() {
-    const { term } = this.$route.query;
-    if (!term) {
-      return;
-    }
-    this.setTerm(term);
-    this.searchSubjects();
+    this.initialize();
   },
   methods: {
     ...mapMutations([
@@ -77,16 +67,25 @@ export default {
     ...mapActions([
       'fetchSubjects',
     ]),
-    submit() {
-      if (!this.term) {
+    initialize() {
+      const { term } = this.$route.query;
+      if (!term) {
         return;
       }
-      if (this.term === this.$route.query.term) {
+      this.setTerm(term);
+      this.searchSubjects();
+    },
+    submit() {
+      if (!this.term) {
         return;
       }
       this.locate();
     },
     locate() {
+      const { term } = this.$route.query;
+      if (term === this.term) {
+        return;
+      }
       this.$router.push({
         name: 'index',
         query: this.query,
