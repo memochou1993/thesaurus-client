@@ -58,17 +58,59 @@
 </template>
 
 <script>
+import {
+  mapState,
+  mapActions,
+} from 'vuex';
 import parser from '../mixins/parser';
 
 export default {
-  props: {
-    relatedSubjects: {
-      type: Array,
-      required: true,
-    },
-  },
   mixins: [
     parser,
   ],
+  data() {
+    return {
+      relatedSubjects: [],
+    };
+  },
+  computed: {
+    ...mapState([
+      'subject',
+    ]),
+    associativeRelationships() {
+      return this.a(this.subject.associativeRelationship.associativeRelationships);
+    },
+  },
+  created() {
+    this.initialize();
+  },
+  methods: {
+    ...mapActions([
+      'fetchSubject',
+    ]),
+    initialize() {
+      this.findRelatedSubjects();
+    },
+    findRelatedSubjects() {
+      this.associativeRelationships.forEach((associativeRelationship) => {
+        this.fetchSubject({
+          props: {
+            subjectId: associativeRelationship.relatedSubjectId.vpSubjectId,
+          },
+        })
+          .then(({ data }) => {
+            this.relatedSubjects = [
+              ...this.relatedSubjects,
+              {
+                ...data,
+                ...{
+                  relationshipType: associativeRelationship.relationshipType,
+                },
+              },
+            ];
+          });
+      });
+    },
+  },
 };
 </script>

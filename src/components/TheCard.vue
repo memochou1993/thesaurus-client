@@ -40,7 +40,6 @@
           class="q-py-xs"
         />
         <TheSectionRelatedSubject
-          :relatedSubjects="relatedSubjects"
           class="q-py-xs"
         />
         <TheSectionParentSubject
@@ -88,11 +87,6 @@ export default {
   mixins: [
     parser,
   ],
-  data() {
-    return {
-      relatedSubjects: [],
-    };
-  },
   computed: {
     ...mapState([
       'fetched',
@@ -114,9 +108,6 @@ export default {
       };
       return terms.sort((a, b) => (sort(a) > sort(b) ? 1 : -1));
     },
-    associativeRelationships() {
-      return this.a(this.subject.associativeRelationship.associativeRelationships);
-    },
   },
   watch: {
     $route() {
@@ -134,12 +125,8 @@ export default {
     ...mapActions([
       'fetchSubject',
     ]),
-    setRelatedSubjects(relatedSubjects) {
-      this.relatedSubjects = relatedSubjects;
-    },
     initialize() {
       this.setFetched(false);
-      this.setRelatedSubjects([]);
       this.findSubjects();
     },
     findSubjects() {
@@ -148,7 +135,6 @@ export default {
         this.setSubject(this.subjects.find(subject => subject.subjectId === subjectId) || null);
       }
       if (this.o(this.subject).subjectId === subjectId) {
-        this.findRelatedSubjects();
         this.setFetched(true);
         return;
       }
@@ -159,32 +145,10 @@ export default {
       })
         .then(({ data }) => {
           this.setSubject(data);
-          // TODO: enable component to find related subjects
-          this.findRelatedSubjects();
         })
         .catch(() => {
           this.setSubject(null);
         });
-    },
-    findRelatedSubjects() {
-      this.associativeRelationships.forEach((associativeRelationship) => {
-        this.fetchSubject({
-          props: {
-            subjectId: associativeRelationship.relatedSubjectId.vpSubjectId,
-          },
-        })
-          .then(({ data }) => {
-            this.relatedSubjects = [
-              ...this.relatedSubjects,
-              {
-                ...data,
-                ...{
-                  relationshipType: associativeRelationship.relationshipType,
-                },
-              },
-            ];
-          });
-      });
     },
   },
 };
