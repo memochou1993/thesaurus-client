@@ -43,11 +43,6 @@ export default {
     ...mapState([
       'fetched',
     ]),
-    query() {
-      return {
-        term: this.term.trim(),
-      };
-    },
   },
   watch: {
     $route() {
@@ -91,13 +86,17 @@ export default {
       }
       this.$router.push({
         name: 'index',
-        query: this.query,
+        query: {
+          term: this.term.trim(),
+        },
       });
     },
     searchSubjects() {
       this.setPage(1);
       this.fetchSubjects({
-        params: this.query,
+        params: {
+          term: this.term.trim(),
+        },
       })
         .then(({ data }) => {
           this.setSubjects(data);

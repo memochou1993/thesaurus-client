@@ -97,12 +97,6 @@ export default {
       'page',
       'subjects',
     ]),
-    query() {
-      return {
-        page: this.page,
-        term: this.$route.query.term,
-      };
-    },
   },
   methods: {
     ...mapMutations([
@@ -119,7 +113,10 @@ export default {
       }
       this.setPage(this.page + 1);
       this.fetchSubjects({
-        params: this.query,
+        params: {
+          page: this.page,
+          term: this.$route.query.term,
+        },
       })
         .then(({ data }) => {
           this.setSubjects([...this.subjects, ...data]);
