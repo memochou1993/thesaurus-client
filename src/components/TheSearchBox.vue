@@ -11,7 +11,9 @@
         outlined
         spellcheck="false"
       >
-        <template v-slot:append>
+        <template
+          v-slot:append
+        >
           <q-icon
             name="search"
             class="cursor-pointer"

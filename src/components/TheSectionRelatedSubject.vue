@@ -1,6 +1,8 @@
 <template>
   <div>
-    <q-card-section>
+    <q-card-section
+      v-if="relatedSubjects.length"
+    >
       <div
         class="q-py-sm text-subtitle1"
       >

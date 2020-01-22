@@ -32,18 +32,18 @@
           </div>
         </q-card-section>
         <TheSectionNote
-          v-if="notes.length"
           :notes="notes"
           class="q-py-xs"
         />
         <TheSectionTerm
-          v-if="terms.length"
           :terms="terms"
           class="q-py-xs"
         />
         <TheSectionRelatedSubject
-          v-if="relatedSubjects.length"
           :relatedSubjects="relatedSubjects"
+          class="q-py-xs"
+        />
+        <TheSectionParentSubject
           class="q-py-xs"
         />
       </q-card>
@@ -71,6 +71,7 @@ import parser from '../mixins/parser';
 import AppMessage from '../components/AppMessage';
 import AppSpinner from '../components/AppSpinner';
 import TheSectionNote from '../components/TheSectionNote';
+import TheSectionParentSubject from '../components/TheSectionParentSubject';
 import TheSectionRelatedSubject from '../components/TheSectionRelatedSubject';
 import TheSectionTerm from '../components/TheSectionTerm';
 
@@ -80,6 +81,7 @@ export default {
     AppMessage,
     AppSpinner,
     TheSectionNote,
+    TheSectionParentSubject,
     TheSectionRelatedSubject,
     TheSectionTerm,
   },
@@ -157,6 +159,7 @@ export default {
       })
         .then(({ data }) => {
           this.setSubject(data);
+          // TODO: enable component to find related subjects
           this.findRelatedSubjects();
         })
         .catch(() => {
@@ -171,12 +174,15 @@ export default {
           },
         })
           .then(({ data }) => {
-            this.relatedSubjects = [...this.relatedSubjects, {
-              ...data,
-              ...{
-                relationshipType: associativeRelationship.relationshipType,
+            this.relatedSubjects = [
+              ...this.relatedSubjects,
+              {
+                ...data,
+                ...{
+                  relationshipType: associativeRelationship.relationshipType,
+                },
               },
-            }];
+            ];
           });
       });
     },
