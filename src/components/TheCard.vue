@@ -32,11 +32,9 @@
           </div>
         </q-card-section>
         <TheSectionNote
-          :notes="notes"
           class="q-py-xs"
         />
         <TheSectionTerm
-          :terms="terms"
           class="q-py-xs"
         />
         <TheSectionRelatedSubject
@@ -93,21 +91,6 @@ export default {
       'subjects',
       'subject',
     ]),
-    notes() {
-      return this.a(this.subject.descriptiveNote.descriptiveNotes);
-    },
-    terms() {
-      const terms = [
-        ...this.a(this.subject.term.preferredTerms),
-        ...this.a(this.subject.term.nonPreferredTerms),
-      ];
-      const sort = (term) => {
-        const { language } = this.o(this.a(term.termLanguage.termLanguages)[0]);
-        const { preferred } = this.o(this.a(term.termLanguage.termLanguages)[0]);
-        return language.split('/').pop() + (preferred === 'Preferred' ? 'a' : 'z');
-      };
-      return terms.sort((a, b) => (sort(a) > sort(b) ? 1 : -1));
-    },
   },
   watch: {
     $route() {

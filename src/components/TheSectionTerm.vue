@@ -87,11 +87,30 @@
 </template>
 
 <script>
+import {
+  mapState,
+} from 'vuex';
+import parser from '../mixins/parser';
+
 export default {
-  props: {
-    terms: {
-      type: Array,
-      required: true,
+  mixins: [
+    parser,
+  ],
+  computed: {
+    ...mapState([
+      'subject',
+    ]),
+    terms() {
+      const terms = [
+        ...this.a(this.subject.term.preferredTerms),
+        ...this.a(this.subject.term.nonPreferredTerms),
+      ];
+      const sort = (term) => {
+        const { language } = this.o(this.a(term.termLanguage.termLanguages)[0]);
+        const { preferred } = this.o(this.a(term.termLanguage.termLanguages)[0]);
+        return language.split('/').pop() + (preferred === 'Preferred' ? 'a' : 'z');
+      };
+      return terms.sort((a, b) => (sort(a) > sort(b) ? 1 : -1));
     },
   },
 };

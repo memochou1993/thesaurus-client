@@ -36,11 +36,21 @@
 </template>
 
 <script>
+import {
+  mapState,
+} from 'vuex';
+import parser from '../mixins/parser';
+
 export default {
-  props: {
-    notes: {
-      type: Array,
-      required: true,
+  mixins: [
+    parser,
+  ],
+  computed: {
+    ...mapState([
+      'subject',
+    ]),
+    notes() {
+      return this.a(this.subject.descriptiveNote.descriptiveNotes);
     },
   },
 };
