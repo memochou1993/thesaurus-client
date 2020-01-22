@@ -75,6 +75,9 @@ export default {
       'fetchSubject',
       'fetchSubjects',
     ]),
+    setParentSubjects(parentSubjects) {
+      this.parentSubjects = parentSubjects;
+    },
     setSelectedSubjectId(selectedSubjectId) {
       this.selectedSubjectId = selectedSubjectId;
     },
@@ -83,6 +86,23 @@ export default {
       this.findParentSubjects();
     },
     findParentSubjects() {
+      if (!this.parents) {
+        this.fetchSubject({
+          props: {
+            subjectId: this.subject.subjectId,
+          },
+        })
+          .then(({ data }) => {
+            this.setParentSubjects([
+              {
+                subject: data,
+                subjectId: data.subjectId,
+                lazy: true,
+              },
+            ]);
+          });
+        return;
+      }
       this.parents.forEach((parent) => {
         this.fetchSubject({
           props: {
@@ -90,14 +110,14 @@ export default {
           },
         })
           .then(({ data }) => {
-            this.parentSubjects = [
+            this.setParentSubjects([
               ...this.parentSubjects,
               {
                 subject: data,
                 subjectId: data.subjectId,
-                lazy: true, // TODO: load child subjects at created
+                lazy: true,
               },
-            ];
+            ]);
           });
       });
     },
