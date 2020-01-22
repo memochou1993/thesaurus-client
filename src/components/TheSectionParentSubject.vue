@@ -17,7 +17,7 @@
           selected-color="primary"
           node-key="subjectId"
           @lazy-load="loadChildSubjects"
-          @update:selected="selectSubject"
+          @update:selected="selectSubject()"
         >
           <template
             v-slot:default-header="prop"
@@ -63,12 +63,26 @@ export default {
   created() {
     this.initialize();
   },
+  watch: {
+    selectedSubjectId(value) {
+      if (!value) {
+        this.setSelectedSubjectId(this.subject.subjectId);
+      }
+    },
+  },
   methods: {
     ...mapActions([
       'fetchSubject',
       'fetchSubjects',
     ]),
+    setSelectedSubjectId(selectedSubjectId) {
+      this.selectedSubjectId = selectedSubjectId;
+    },
     initialize() {
+      this.setSelectedSubjectId(this.subject.subjectId);
+      this.findParentSubjects();
+    },
+    findParentSubjects() {
       this.parents.forEach((parent) => {
         this.fetchSubject({
           props: {
@@ -81,7 +95,7 @@ export default {
               {
                 subject: data,
                 subjectId: data.subjectId,
-                lazy: true,
+                lazy: true, // TODO: load child subjects at created
               },
             ];
           });
@@ -101,10 +115,11 @@ export default {
             return done([]);
           }
           const subjects = data.map((subject) => {
+            const lazy = subject.subjectId === this.subject.subjectId;
             return {
               subject,
               subjectId: subject.subjectId,
-              lazy: true,
+              lazy,
             };
           });
           return done(subjects);
