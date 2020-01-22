@@ -96,12 +96,11 @@ export default {
       'fetched',
       'page',
       'subjects',
-      'term',
     ]),
     query() {
       return {
         page: this.page,
-        term: this.term,
+        term: this.$route.query.term,
       };
     },
   },
