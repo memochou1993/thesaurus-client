@@ -1,8 +1,6 @@
 <template>
   <div>
-    <q-card-section
-      v-if="parents.length"
-    >
+    <q-card-section>
       <div
         class="q-py-sm text-subtitle1"
       >
@@ -83,26 +81,19 @@ export default {
     },
     initialize() {
       this.setSelectedSubjectId(this.subject.subjectId);
+      if (!this.parents.length) {
+        this.setParentSubjects([
+          {
+            subject: this.subject,
+            subjectId: this.subject.subjectId,
+            lazy: true,
+          },
+        ]);
+        return;
+      }
       this.findParentSubjects();
     },
     findParentSubjects() {
-      if (!this.parents) {
-        this.fetchSubject({
-          props: {
-            subjectId: this.subject.subjectId,
-          },
-        })
-          .then(({ data }) => {
-            this.setParentSubjects([
-              {
-                subject: data,
-                subjectId: data.subjectId,
-                lazy: true,
-              },
-            ]);
-          });
-        return;
-      }
       this.parents.forEach((parent) => {
         this.fetchSubject({
           props: {
