@@ -1,6 +1,7 @@
-FROM node:alpine
+# build stage
+FROM node:alpine as builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY . .
 
@@ -8,4 +9,6 @@ RUN yarn global add @quasar/cli
 RUN yarn install
 RUN quasar build -m ssr
 
-CMD [ "node", "dist/ssr/index.js" ]
+WORKDIR /app/dist/ssr
+
+CMD [ "yarn", "start" ]
