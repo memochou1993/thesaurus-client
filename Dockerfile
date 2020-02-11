@@ -9,6 +9,13 @@ RUN yarn global add @quasar/cli
 RUN yarn install
 RUN quasar build -m ssr
 
-WORKDIR /app/dist/ssr
+# final stage
+FROM node:alpine
+
+WORKDIR /root
+
+COPY --from=builder /app/dist/ssr .
+
+RUN yarn install
 
 CMD [ "yarn", "start" ]
