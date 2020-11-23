@@ -9,22 +9,27 @@
       <div
         class="q-px-md"
       >
-        <q-tree
-          :nodes="parentSubjects"
-          :selected.sync="selectedSubjectId"
-          selected-color="primary"
-          node-key="subjectId"
-          @lazy-load="loadChildSubjects"
-          @update:selected="selectSubject()"
+        <div
+          v-for="(parentSubject, index) in parentSubjects"
+          :key="index"
         >
-          <template
-            v-slot:default-header="prop"
+          <q-tree
+            :nodes="[parentSubject]"
+            :selected.sync="selectedSubjectId"
+            selected-color="primary"
+            node-key="subjectId"
+            @lazy-load="loadChildSubjects"
+            @update:selected="selectSubject()"
           >
-            <div
-              v-html="o(a(prop.node.subject.term.preferredTerms)[0]).termText"
-            />
-          </template>
-        </q-tree>
+            <template
+              v-slot:default-header="prop"
+            >
+              <div
+                v-html="o(a(prop.node.subject.term.preferredTerms)[0]).termText"
+              />
+            </template>
+          </q-tree>
+        </div>
       </div>
     </q-card-section>
   </div>
