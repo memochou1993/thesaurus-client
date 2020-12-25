@@ -4,6 +4,8 @@ services:
   app:
     container_name: thesaurus-client
     build: .
-    ports:
-      - "31:3000"
     restart: always
+    env_file:
+      - .env
+    ports:
+      - "${APP_PORT}:3000"
