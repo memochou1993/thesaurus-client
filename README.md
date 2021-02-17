@@ -1,4 +1,4 @@
-# Art & Architecture Thesaurus (thesaurus-client)
+# Art & Architecture Thesaurus (thesaurus-ui)
 
 
 

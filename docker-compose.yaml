@@ -2,7 +2,7 @@ version: '3'
 
 services:
   app:
-    container_name: thesaurus-client
+    container_name: thesaurus-ui
     build: .
     ports:
       - "31:3000"
